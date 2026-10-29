@@ -31,21 +31,40 @@ quote.amount     // 25000000n: the exact USDC cost, never more than the budget
 quote.tier       // { duration: 94608000n, discountBps: 3125 }: the 3-year rate, 31.25% off
 quote.nextTier   // 6 years at 43.75% off for $2.000071 more (extraAmount: 2000071n)
 
-// Approve (if needed) and renew, spending at most $25.
+// Renew, spending at most $25.
 const wallet = createWalletClient({ account, chain: mainnet, transport: custom(window.ethereum) })
 const { hash } = await renewWithBudget(wallet, { label: 'namepass', budget: 25_000000n, token: usdc })
 ```
 
-### Batching, smart accounts and relayers
+### Approval
 
-`prepareRenewal` returns plain `{ to, data }` calls instead of sending them:
+Renewals are paid in an ERC-20, so the renewer needs a token approval before it can charge you. `renewWithBudget` handles it:
+
+1. It reads your current allowance for the renewer.
+2. If that is less than `quote.amount`, it sends `approve(renewer, quote.amount)` and waits for it to confirm. Your wallet prompts twice: approve, then renew.
+3. It sends `renew`. If the allowance already covered the price, this is the only prompt.
+
+The approval is for exactly `quote.amount`: never unlimited, and never the whole budget. If the price changes between quote and send, the renewal fails rather than spending more than you were shown. This matches the exact-amount approval ensjs documents for `renewName`; the difference is that ensjs leaves sending it to you.
+
+### Doing it yourself: batching, smart accounts and relayers
+
+To send the approval and renewal yourself, use `prepareRenewal`. It returns plain `{ to, data }` calls, including the approval only when one is needed:
 
 ```ts
-const calls = await prepareRenewal(client, quote, { account: '0x…' })
-// [approve?, renew]: send with sendCalls (EIP-5792), wagmi, or your relayer
-```
+import { prepareRenewal } from 'ens-budget'
 
-The approval is for exactly `quote.amount`, not the budget, and is skipped when the existing allowance already covers it. If the price changes between quote and send, the renewal fails rather than spending more than was shown. This is the same exact-amount approval ensjs documents for `renewName`, which leaves sending it to the caller.
+const calls = await prepareRenewal(client, quote, { account: wallet.account.address })
+// [approve, renew] or just [renew]
+
+// One prompt in wallets that support EIP-5792 batching:
+await wallet.sendCalls({ calls })
+
+// Or one at a time; the approval must confirm before renew:
+for (const call of calls) {
+  const hash = await wallet.sendTransaction(call)
+  await client.waitForTransactionReceipt({ hash })
+}
+```
 
 ### Local math, no RPC
 
