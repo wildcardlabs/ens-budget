@@ -1,5 +1,5 @@
 {
-  "name": "@namepass/ens-budget",
+  "name": "ens-budget",
   "version": "0.1.0",
   "description": "Budget-first ENS v2 renewals: turn a stablecoin budget into the longest renewal it buys, then renew.",
   "license": "MIT",
@@ -10,9 +10,6 @@
   },
   "homepage": "https://github.com/wildcardlabs/ens-budget#readme",
   "bugs": "https://github.com/wildcardlabs/ens-budget/issues",
-  "publishConfig": {
-    "access": "public"
-  },
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",

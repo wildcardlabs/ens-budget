@@ -1,4 +1,4 @@
-# @namepass/ens-budget
+# ens-budget
 
 Budget-first ENS v2 renewals. Say how much you want to spend; get the longest renewal that buys, confirmed against ENS, then renew.
 
@@ -7,7 +7,7 @@ Budget-first ENS v2 renewals. Say how much you want to spend; get the longest re
 - Exact: matches ENS's `getRenewPrice` to the unit, including multi-year discounts.
 
 ```sh
-npm i @namepass/ens-budget viem
+npm i ens-budget viem
 ```
 
 ## Why budget-first
@@ -19,7 +19,7 @@ ENS v2 prices in USD, paid in stablecoins, with multi-year discounts applied to 
 ```ts
 import { createPublicClient, createWalletClient, custom, http } from 'viem'
 import { mainnet } from 'viem/chains'
-import { addresses, quoteRenewal, renewWithBudget } from '@namepass/ens-budget'
+import { addresses, quoteRenewal, renewWithBudget } from 'ens-budget'
 
 const client = createPublicClient({ chain: mainnet, transport: http() })
 const { usdc } = addresses[1]
@@ -52,7 +52,7 @@ The approval is for exactly `quote.amount`, not the budget. If the price changes
 For sliders and other live UIs, read pricing once and solve locally:
 
 ```ts
-import { getPricing, priceOf, solve } from '@namepass/ens-budget'
+import { getPricing, priceOf, solve } from 'ens-budget'
 
 const pricing = await getPricing(client, { token: usdc })
 solve(pricing, { label: 'nicks', budget: 25_000000n })      // { duration, amount, tier, nextTier }
