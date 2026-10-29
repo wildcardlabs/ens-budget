@@ -24,16 +24,16 @@ import { addresses, quoteRenewal, renewWithBudget } from 'ens-budget'
 const client = createPublicClient({ chain: mainnet, transport: http() })
 const { usdc } = addresses[1]
 
-// What does $25 buy for nicks.eth?
-const quote = await quoteRenewal(client, { label: 'nicks', budget: 25_000000n, token: usdc })
-quote.duration   // seconds
-quote.amount     // exact USDC cost, <= budget
-quote.tier       // { duration, discountBps } or null at full price
-quote.nextTier   // { duration, discountBps, amount, extraAmount, extraDuration } or null
+// What does $25 buy for namepass.eth?
+const quote = await quoteRenewal(client, { label: 'namepass', budget: 25_000000n, token: usdc })
+quote.duration   // 143345079n seconds, about 4 years 6½ months
+quote.amount     // 25000000n: the exact USDC cost, never more than the budget
+quote.tier       // { duration: 94608000n, discountBps: 3125 }: the 3-year rate, 31.25% off
+quote.nextTier   // 6 years at 43.75% off for $2.000071 more (extraAmount: 2000071n)
 
 // Approve (if needed) and renew, spending at most $25.
 const wallet = createWalletClient({ account, chain: mainnet, transport: custom(window.ethereum) })
-const { hash } = await renewWithBudget(wallet, { label: 'nicks', budget: 25_000000n, token: usdc })
+const { hash } = await renewWithBudget(wallet, { label: 'namepass', budget: 25_000000n, token: usdc })
 ```
 
 ### Batching, smart accounts and relayers
@@ -45,7 +45,7 @@ const calls = await prepareRenewal(client, quote, { account: '0x…' })
 // [approve?, renew]: send with sendCalls (EIP-5792), wagmi, or your relayer
 ```
 
-The approval is for exactly `quote.amount`, not the budget. If the price changes between quote and send, the renewal fails rather than spending more than was shown.
+The approval is for exactly `quote.amount`, not the budget, and is skipped when the existing allowance already covers it. If the price changes between quote and send, the renewal fails rather than spending more than was shown. This is the same exact-amount approval ensjs documents for `renewName`, which leaves sending it to the caller.
 
 ### Local math, no RPC
 
@@ -55,8 +55,8 @@ For sliders and other live UIs, read pricing once and solve locally:
 import { getPricing, priceOf, solve } from 'ens-budget'
 
 const pricing = await getPricing(client, { token: usdc })
-solve(pricing, { label: 'nicks', budget: 25_000000n })      // { duration, amount, tier, nextTier }
-priceOf(pricing, { label: 'nicks', duration: 31536000n })   // exact cost of one year
+solve(pricing, { label: 'namepass', budget: 25_000000n })      // { duration, amount, tier, nextTier }
+priceOf(pricing, { label: 'namepass', duration: 31536000n })   // exact cost of one year
 ```
 
 ## Labels are not normalized
