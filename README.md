@@ -8,10 +8,10 @@ Give it a label and a stablecoin amount. It returns the longest renewal that amo
 
 [![npm](https://img.shields.io/npm/v/ens-budget?style=flat-square&color=0080BC)](https://www.npmjs.com/package/ens-budget)
 [![CI](https://img.shields.io/github/actions/workflow/status/wildcardlabs/ens-budget/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/wildcardlabs/ens-budget/actions/workflows/ci.yml)
-[![min+gzip](https://img.shields.io/bundlephobia/minzip/ens-budget?style=flat-square&label=min%2Bgzip)](https://bundlephobia.com/package/ens-budget)
+[![size](https://deno.bundlejs.com/badge?q=ens-budget&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22viem%22%5D%7D%7D&badge-style=flat-square)](https://bundlejs.com/?q=ens-budget&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22viem%22%5D%7D%7D)
 [![types](https://img.shields.io/npm/types/ens-budget?style=flat-square)](https://www.npmjs.com/package/ens-budget)
 [![viem](https://img.shields.io/npm/dependency-version/ens-budget/peer/viem?style=flat-square)](https://viem.sh)
-[![license](https://img.shields.io/npm/l/ens-budget?style=flat-square)](./LICENSE)
+[![license](https://img.shields.io/github/license/wildcardlabs/ens-budget?style=flat-square)](./LICENSE)
 
 [Install](#install) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Recipes](#recipes) · [API](#api) · [Networks](#networks)
 
