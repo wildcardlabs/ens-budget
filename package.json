@@ -4,6 +4,12 @@
   "description": "Budget-first ENS v2 renewals: turn a stablecoin budget into the longest renewal it buys, then renew.",
   "license": "MIT",
   "author": "Namepass LLC <steve@namepass.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wildcardlabs/ens-budget.git"
+  },
+  "homepage": "https://github.com/wildcardlabs/ens-budget#readme",
+  "bugs": "https://github.com/wildcardlabs/ens-budget/issues",
   "publishConfig": {
     "access": "public"
   },
