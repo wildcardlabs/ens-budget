@@ -2,7 +2,7 @@
 
 # ens-budget
 
-**Renew ENS names by budget, not by duration.**
+**Renew ENS names by budget.**
 
 Give it a label and a stablecoin amount. It returns the longest renewal that amount buys under ENS v2 pricing, checked against ENS's own quote, and can send the renewal for you.
 
