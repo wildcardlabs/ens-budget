@@ -19,7 +19,7 @@ import {
 const live = process.env.ENS_BUDGET_LIVE === '1'
 const client = createPublicClient({
   chain: mainnet,
-  transport: http(process.env.MAINNET_RPC_URL ?? 'https://ethereum-rpc.publicnode.com'),
+  transport: http(process.env.MAINNET_RPC_URL || 'https://ethereum-rpc.publicnode.com'),
 })
 const { usdc, dai, ethRegistrar, ethRenewerV1 } = addresses[1]
 const YEAR = 31536000n

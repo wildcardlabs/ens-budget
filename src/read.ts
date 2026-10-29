@@ -1,4 +1,4 @@
-import type { Address, Chain, Client, Transport } from 'viem'
+import { type Address, type Chain, type Client, maxUint64, type Transport } from 'viem'
 import { readContract } from 'viem/actions'
 import { getAction } from 'viem/utils'
 import { oracleAbi, renewerAbi } from './abi.js'
@@ -113,7 +113,11 @@ export async function quoteRenewal(
 
   const price = (d: bigint) =>
     read(client)({ address: renewer, abi: renewerAbi, functionName: 'getRenewPrice', args: [label, d, token] })
-  const [actual, longer] = await Promise.all([price(duration), price(duration + 1n)])
+  /* One second longer must cost more than the budget, unless uint64 has no longer. */
+  const [actual, longer] = await Promise.all([
+    price(duration),
+    duration < maxUint64 ? price(duration + 1n) : budget + 1n,
+  ])
   if (actual !== amount) throw new QuoteMismatchError(amount, actual)
   if (longer <= budget) throw new QuoteMismatchError(budget + 1n, longer)
 

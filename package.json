@@ -28,9 +28,13 @@
   "keywords": [
     "ens",
     "ensv2",
+    "ethereum",
+    "ens-renewal",
     "renewal",
+    "budget",
     "viem",
-    "usdc"
+    "usdc",
+    "stablecoin"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

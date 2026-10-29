@@ -47,7 +47,7 @@ const balance = () => wallet.readContract({ address: usdc, abi: usdcAbi, functio
 
 describe.runIf(fork)('mainnet fork', () => {
   beforeAll(async () => {
-    anvil = spawn('anvil', ['--fork-url', process.env.MAINNET_RPC_URL ?? 'https://ethereum-rpc.publicnode.com', '--port', String(port), '--silent'])
+    anvil = spawn('anvil', ['--fork-url', process.env.MAINNET_RPC_URL || 'https://ethereum-rpc.publicnode.com', '--port', String(port), '--silent'])
     for (let i = 0; i < 100; i++) {
       try {
         await wallet.getBlockNumber()
